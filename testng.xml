@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="DB-UI Validation Suite" preserve-order="true">
+
+
+
+    <test name="Data Validation Tests">
+        <classes>
+            <class name="DB.DatabaseSmokeTest"/>
+        </classes>
+    </test>
+
+    <test name="SmokeTests">
+        <classes>
+            <class name="Web.Smoke">
+                <methods>
+                    <include name="Setup"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Comparator">
+        <classes>
+            <class name="Compare.Compare"/>
+        </classes>
+    </test>
+
+</suite>
