@@ -18,6 +18,8 @@ import java.time.Duration;
 import java.util.Map;
 
 public class Common {
+
+    private static int stepCounter = 1;
     private static String getLocatorName(By locator) {
         try {
             for (Field field : Locators.class.getDeclaredFields()) {
@@ -39,8 +41,9 @@ public class Common {
     }
 
     public static void log(String message) {
-        Reporter.log(message, true);
-        Allure.addAttachment("LOG", message);
+        Reporter.log("Step " + stepCounter + " :: " + message, true);
+        Allure.addAttachment("LOG - Step " + stepCounter, message);
+        stepCounter++;   // increment step number
     }
     public static void error(String message) {
         Reporter.log("ERROR: " + message, true);
@@ -205,7 +208,7 @@ public class Common {
         }
     }
     public static void writeFEJson(Map<String, Object> feValues) {
-        String filePath = System.getProperty("user.dir") + "/target/FE_Values.json";
+        String filePath = System.getProperty("user.dir") + "/StoredData/FE_Values.json";
 
         try (FileWriter file = new FileWriter(filePath)) {
 
@@ -234,14 +237,14 @@ public class Common {
             Common.log("ERROR exporting FE JSON: " + e.getMessage());
         }
     }
-    public static JSONObject DB_JSON = null;
-    public static JSONObject FE_JSON = null;
-    public static void loadJsonFiles() {
+    public JSONObject DB_JSON = null;
+    public JSONObject FE_JSON = null;
+    public void loadJsonFiles() {
         try {
             if (DB_JSON == null) {
                 DB_JSON = new JSONObject(
                         new String(Files.readAllBytes(
-                                Paths.get("C:/Users/Tester/Desktop/CRED-DB/target/db_values.json")
+                                Paths.get(System.getProperty("user.dir"),"StoredData","db_values.json")
                         ))
                 );
             }
@@ -249,7 +252,7 @@ public class Common {
             if (FE_JSON == null) {
                 FE_JSON = new JSONObject(
                         new String(Files.readAllBytes(
-                                Paths.get("C:/Users/Tester/Desktop/CRED-DB/target/FE_Values.json")
+                                Paths.get(System.getProperty("user.dir"),"StoredData","FE_Values.json")
                         ))
                 );
             }
@@ -259,7 +262,7 @@ public class Common {
         }
     }
 
-    public static void compareDB_FE(String dbKey, String feKey) {
+    public void compareDB_FE(String dbKey, String feKey) {
         loadJsonFiles();
 
         try {

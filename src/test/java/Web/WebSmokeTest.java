@@ -11,6 +11,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import utils.Common;
 import utils.JsonDataLoader;
@@ -20,16 +22,17 @@ import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Smoke {
-    @Test
+public class WebSmokeTest {
+       private WebDriver driver;
+       Map<String, Object> feValues = new LinkedHashMap<>();
+    @BeforeTest
     void Setup() throws InterruptedException {
-        Map<String, Object> feValues = new LinkedHashMap<>();
-
+        
         //-CHROME-//
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
-        WebDriver driver = new ChromeDriver(options);
+        driver = new ChromeDriver(options);
 
 //        //-FIREFOX-//
 //    WebDriverManager.firefoxdriver().setup();
@@ -64,46 +67,10 @@ public class Smoke {
 
         new WebDriverWait(driver, Duration.ofSeconds(100))
                 .until(ExpectedConditions.visibilityOfElementLocated(Locators.CREDEBTLOGO));
+    }
 
-//        Common.clickElement(driver,Locators.RESULTSBUTTON);
-//        Common.clickElement(driver,Locators.CLOSINGPOSITIONSBUTTON);
-
-        // CLOSING //
-
-//        Common.verifyElementVisible(driver, Locators.CLOSING_HEADING);
-//        Common.verifyElementVisible(driver, Locators.UPDATE_BUTTON);
-//        Common.verifyElementVisible(driver, Locators.ALL_BUTTON);
-//        Common.verifyElementVisible(driver, Locators.MONTH_BUTTON);
-//        Common.verifyElementVisible(driver, Locators.YEAR_BUTTON);
-//        Common.verifyElementVisible(driver, Locators.RANGE_BUTTON);
-//        Common.verifyElementVisible(driver, Locators.PER_PAGE_DROPDOWN);
-//
-//        // BANK-BALANCE //
-//
-//        Common.verifyElementVisible(driver, Locators.BANK_BALANCES_TAB);
-//        Thread.sleep(10000);
-//        Common.clickElement(driver,Locators.BANK_BALANCES_TAB);
-//        Common.verifyElementVisible(driver, Locators.CLOSING_BANK_BALANCES_TITLE);
-//        Common.verifyElementVisible(driver, Locators.UPDATE_BUTTON);
-
-        // CHARTS //
-//
-//        Common.verifyElementVisible(driver, Locators.CHARTS_TAB);
-//        Thread.sleep(5000);
-//        Common.clickElement(driver,Locators.CHARTS_TAB);
-//
-//        Common.verifyElementVisible(driver, Locators.CHARTS_CARD_TITLE);
-//
-//        Common.verifyElementVisible(driver, Locators.ENTITIES_TAB);
-//        Thread.sleep(10000);
-//        Common.clickElement(driver,Locators.ENTITIES_TAB);
-//
-//        Common.verifyElementVisible(driver, Locators.ENTITIES_TITLE);
-//        Common.verifyElementVisible(driver, Locators.ADD_ENTITY_BUTTON);
-//        Common.verifyElementVisible(driver, Locators.ROLE_LABEL);
-
-        //Trade Transaction//
-
+        @Test
+        public void counts_Of_Trade_Transactions_Page() throws Exception {
         Common.verifyElementVisible(driver, Locators.TRADE_ICON);
         Common.clickElement(driver, Locators.TRADE_ICON);
         Common.verifyElementVisible(driver, Locators.TRANSACTIONS_ICON);
@@ -243,5 +210,13 @@ public class Smoke {
 
 
         Common.writeFEJson(feValues);
-    }
+}
+
+@AfterTest
+public void tearDown(){
+        driver.manage().deleteAllCookies();
+        driver.quit();
+}
+
+    
 }

@@ -3,27 +3,31 @@
 
 <suite name="DB-UI Validation Suite" preserve-order="true">
 
-
-
-    <test name="Data Validation Tests">
+   <test name="Data Extract from DB">
         <classes>
-            <class name="DB.DatabaseSmokeTest"/>
+         <class name="DB.DatabaseSmokeTest"/>
+            <methods>
+            <include name="db_Value_Extraction"/>
+            </methods>
         </classes>
     </test>
 
-    <test name="SmokeTests">
+     <test name="Data extarct from web Trade > Transaction">
         <classes>
-            <class name="Web.Smoke">
+            <class name="Web.WebSmokeTest">
                 <methods>
-                    <include name="Setup"/>
+                    <include name="counts_Of_Trade_Transactions_Page"/>
                 </methods>
             </class>
         </classes>
-    </test>
+    </test>  
 
     <test name="Comparator">
         <classes>
             <class name="Compare.Compare"/>
+            <methods>
+            <include name="compare"/>
+            </methods>
         </classes>
     </test>
 

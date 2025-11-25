@@ -12,7 +12,7 @@ public class JsonDataLoader {
         if (data == null) {
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                File file = new File("target/db_values.json");
+                File file = new File("db_values.json");
                 data = mapper.readValue(file, Map.class);
             } catch (Exception e) {
                 throw new RuntimeException("Unable to load DB JSON: " + e.getMessage());

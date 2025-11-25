@@ -66,7 +66,7 @@ public class DatabaseSmokeTest {
         try {
             ObjectMapper mapper = new ObjectMapper();
             // you can write to src/test/resources or target directory
-            File output = new File("target/db_values.json");
+            File output = new File("StoredData/db_values.json");
             mapper.writerWithDefaultPrettyPrinter().writeValue(output, EXPORTED_VALUES);
             Common.log("DB values exported to JSON: " + output.getAbsolutePath());
         } catch (Exception e) {
@@ -116,7 +116,7 @@ public class DatabaseSmokeTest {
 
             EXPORTED_VALUES.put(queryInfo.variableName, result);
 			// Store result in a variable (using reflection or Map for simplicity)
-            Common.log(queryInfo.variableName + " " + result);
+            Common.log(queryInfo.variableName + " : " + result);
 			
 		} catch (Exception e) {
             Common.error("---------------------------------------------");
@@ -126,7 +126,7 @@ public class DatabaseSmokeTest {
 	}
 
 	@Test
-	public void DB_Value_Extraction() throws Exception {
+	public void db_Value_Extraction() throws Exception {
 		// Define all queries in arrays
 		QueryInfo[] queries = {
 			// Special case: existence check
