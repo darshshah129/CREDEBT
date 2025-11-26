@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import utils.Common;
-import utils.DBHelper;
+import org.utils.Common;
+import org.utils.DBHelper;
 
 import java.io.File;
 import java.math.BigDecimal;

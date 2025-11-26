@@ -1,4 +1,4 @@
-package utils;
+package org.utils;
 
 import org.openqa.selenium.By;
 

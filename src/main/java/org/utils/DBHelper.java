@@ -1,4 +1,4 @@
-package utils;
+package org.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -116,5 +116,3 @@ public class DBHelper {
 		return builder.toString();
 	}
 }
-
-

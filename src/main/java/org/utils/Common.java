@@ -1,4 +1,4 @@
-package utils;
+package org.utils;
 
 import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
@@ -242,36 +242,6 @@ public class Common {
             log("❌ ERROR exporting FE JSON: " + e.getMessage());
         }
     }
-//    public static void writeFEJson(Map<String, Object> feValues) {
-//        String filePath = System.getProperty("user.dir") + "/StoredData/FE_Values.json";
-//
-//        try (FileWriter file = new FileWriter(filePath)) {
-//
-//            file.write("{\n");
-//
-//            int index = 0;
-//            int size = feValues.size();
-//
-//            for (Map.Entry<String, Object> entry : feValues.entrySet()) {
-//                String key = entry.getKey();
-//                Object value = entry.getValue();
-//
-//                file.write("  \"" + key + "\" : \"" + value + "\"");
-//                if (index < size - 1) file.write(",");
-//                file.write("\n");
-//
-//                index++;
-//            }
-//
-//            file.write("}");
-//
-//            Common.log("FE JSON exported successfully: " + filePath);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Common.log("ERROR exporting FE JSON: " + e.getMessage());
-//        }
-//    }
     public JSONObject DB_JSON = null;
     public JSONObject FE_JSON = null;
     public void loadJsonFiles() {
