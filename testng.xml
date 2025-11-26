@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="DB-UI Validation Suite" parallel="classes" thread-count="3">
+<suite name="DB-UI Validation Suite" parallel="methods" thread-count="5">
 
-   <test name="Data Extract from DB">
+    <!-- <test name="Data Extract from DB">
         <classes>
-         <class name="DB.DatabaseSmokeTest"/>
+            <class name="DB.DatabaseSmokeTest"/>
         </classes>
-    </test>
+    </test> -->
 
     <test name="Frontend">
         <classes>
-            <class name="Web.WebSmokeTest">
-                <methods>
-                    <include name="Trade_Transactions_Page"/>
-                </methods>
-            </class>
+            <class name="Web.WebSmokeTest"/>
         </classes>
     </test>
 

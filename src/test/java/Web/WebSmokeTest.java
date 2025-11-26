@@ -1,14 +1,10 @@
 package Web;
 
-import DB.DatabaseSmokeTest;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
@@ -19,9 +15,35 @@ import org.utils.Locators;
 import java.time.Duration;
 
 public class WebSmokeTest {
-    private WebDriver driver;
-    private TransactionsPage transactionsPage;
-    private AmortisationPage amortisationPage;
+    // ThreadLocal to give each thread its own WebDriver instance
+    private static final ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
+    private ThreadLocal<TransactionsPage> transactionsPageThreadLocal = new ThreadLocal<>();
+    private ThreadLocal<AmortisationPage> amortisationPageThreadLocal = new ThreadLocal<>();
+
+    // Getter methods to access ThreadLocal values
+    private WebDriver getDriver() {
+        return driverThreadLocal.get();
+    }
+
+    private void setDriver(WebDriver driver) {
+        driverThreadLocal.set(driver);
+    }
+
+    private TransactionsPage getTransactionsPage() {
+        return transactionsPageThreadLocal.get();
+    }
+
+    private void setTransactionsPage(TransactionsPage page) {
+        transactionsPageThreadLocal.set(page);
+    }
+
+    private AmortisationPage getAmortisationPage() {
+        return amortisationPageThreadLocal.get();
+    }
+
+    private void setAmortisationPage(AmortisationPage page) {
+        amortisationPageThreadLocal.set(page);
+    }
 
     @AfterClass(alwaysRun = true)
     public void exportFEJson() {
@@ -33,11 +55,12 @@ public class WebSmokeTest {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
-        driver = new ChromeDriver(options);
+        WebDriver driver = new ChromeDriver(options);
+        setDriver(driver);  // Store in ThreadLocal
 
         // Initialize pages with driver
-        transactionsPage = new TransactionsPage(driver);
-        amortisationPage = new AmortisationPage(driver);
+        setTransactionsPage(new TransactionsPage(driver));
+        setAmortisationPage(new AmortisationPage(driver));
 
         driver.manage().window().maximize();
 
@@ -61,17 +84,22 @@ public class WebSmokeTest {
 
     @Test(priority = 2)
     public void Trade_Transactions_Page() throws Exception {
-        transactionsPage.runTransactionTest();
+        getTransactionsPage().runTransactionTest();
     }
 
     @Test(priority = 2)
     public void Trade_Amortisation() throws Exception {
-        amortisationPage.runAmortisationTest();
+        getAmortisationPage().runAmortisationTest();
     }
+
     @AfterMethod(alwaysRun = true)
-        public void tearDown() {
+    public void tearDown() {
+        WebDriver driver = getDriver();
+        if (driver != null) {
             driver.manage().deleteAllCookies();
             driver.quit();
+            driverThreadLocal.remove();  // Clean up ThreadLocal
         }
+    }
     }
 
