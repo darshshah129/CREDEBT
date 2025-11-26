@@ -59,12 +59,12 @@ public class WebSmokeTest {
                 .until(ExpectedConditions.visibilityOfElementLocated(Locators.CREDEBTLOGO));
     }
 
-    @Test
+    @Test(priority = 2)
     public void Trade_Transactions_Page() throws Exception {
         transactionsPage.runTransactionTest();
     }
 
-    @Test
+    @Test(priority = 2)
     public void Trade_Amortisation() throws Exception {
         amortisationPage.runAmortisationTest();
     }

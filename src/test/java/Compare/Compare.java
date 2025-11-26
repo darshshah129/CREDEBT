@@ -8,7 +8,7 @@ import org.utils.Common;
 public class Compare {
     Common common = new Common();
    
-    @Test
+    @Test(priority = 3)
     public void compare() throws Exception {
        common.compareDB_FE("DB_GET_A_ETR_RECORDS","FE_GET_A_ETR_RECORDS");
        common.compareDB_FE("DB_GET_B_ETR_RECORDS","FE_GET_B_ETR_RECORDS");

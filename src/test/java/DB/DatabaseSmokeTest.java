@@ -125,7 +125,7 @@ public class DatabaseSmokeTest {
 		}
 	}
 
-	@Test
+	@Test(priority = 1)
 	public void db_Value_Extraction() throws Exception {
 		// Define all queries in arrays
 		QueryInfo[] queries = {

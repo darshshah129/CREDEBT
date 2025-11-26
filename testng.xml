@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="DB-UI Validation Suite" preserve-order="true">
+<suite name="DB-UI Validation Suite" parallel="classes" thread-count="3">
 
    <test name="Data Extract from DB">
         <classes>
@@ -9,18 +9,19 @@
         </classes>
     </test>
 
-    <test name="Frontend - Parallel" parallel="classes" thread-count="5">
+    <test name="Frontend">
         <classes>
-            <!-- Put each page / feature class you want run in parallel -->
-            <class name="Web.WebSmokeTest"/>
-            <!-- add more frontend classes here -->
+            <class name="Web.WebSmokeTest">
+                <methods>
+                    <include name="Trade_Transactions_Page"/>
+                </methods>
+            </class>
         </classes>
     </test>
 
-        <test name="Comparator">
+    <test name="Comparator">
         <classes>
             <class name="Compare.Compare"/>
         </classes>
     </test>
-
 </suite>
