@@ -3,13 +3,15 @@ package utils;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import org.json.JSONObject;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.Reporter;
-
+import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -94,7 +96,7 @@ public class Common {
     // 🔹 Highlight element in a specific color (green/red)
     public static void highlightElement(WebDriver driver, WebElement element, String color) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].style.border='3px solid " + color + "'", element);
+        js.executeScript("arguments[0].style.border='5px solid " + color + "'", element);
     }
 
     // 🔹 Verify element is visible + highlight in green + assert isDisplayed()
@@ -207,36 +209,69 @@ public class Common {
             }
         }
     }
-    public static void writeFEJson(Map<String, Object> feValues) {
+    // ONE global map for all FE tests
+    private static final Map<String, Object> GLOBAL_FE_VALUES =
+            new ConcurrentHashMap<>();
+
+    // Called from ANY FE test
+    public static void addFEValue(String key, Object value) {
+        GLOBAL_FE_VALUES.put(key, value);
+    }
+
+    // Called ONCE after all tests
+    public static synchronized void writeFEJson() {
         String filePath = System.getProperty("user.dir") + "/StoredData/FE_Values.json";
 
         try (FileWriter file = new FileWriter(filePath)) {
 
             file.write("{\n");
-
             int index = 0;
-            int size = feValues.size();
+            int size = GLOBAL_FE_VALUES.size();
 
-            for (Map.Entry<String, Object> entry : feValues.entrySet()) {
-                String key = entry.getKey();
-                Object value = entry.getValue();
-
-                file.write("  \"" + key + "\" : \"" + value + "\"");
+            for (Map.Entry<String, Object> entry : GLOBAL_FE_VALUES.entrySet()) {
+                file.write("  \"" + entry.getKey() + "\" : \"" + entry.getValue() + "\"");
                 if (index < size - 1) file.write(",");
                 file.write("\n");
-
                 index++;
             }
 
             file.write("}");
-
-            Common.log("FE JSON exported successfully: " + filePath);
+            log("✅ FE JSON exported successfully");
 
         } catch (Exception e) {
-            e.printStackTrace();
-            Common.log("ERROR exporting FE JSON: " + e.getMessage());
+            log("❌ ERROR exporting FE JSON: " + e.getMessage());
         }
     }
+//    public static void writeFEJson(Map<String, Object> feValues) {
+//        String filePath = System.getProperty("user.dir") + "/StoredData/FE_Values.json";
+//
+//        try (FileWriter file = new FileWriter(filePath)) {
+//
+//            file.write("{\n");
+//
+//            int index = 0;
+//            int size = feValues.size();
+//
+//            for (Map.Entry<String, Object> entry : feValues.entrySet()) {
+//                String key = entry.getKey();
+//                Object value = entry.getValue();
+//
+//                file.write("  \"" + key + "\" : \"" + value + "\"");
+//                if (index < size - 1) file.write(",");
+//                file.write("\n");
+//
+//                index++;
+//            }
+//
+//            file.write("}");
+//
+//            Common.log("FE JSON exported successfully: " + filePath);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Common.log("ERROR exporting FE JSON: " + e.getMessage());
+//        }
+//    }
     public JSONObject DB_JSON = null;
     public JSONObject FE_JSON = null;
     public void loadJsonFiles() {
@@ -289,4 +324,58 @@ public class Common {
             error("❌ ERROR comparing " + dbKey + " & " + feKey + ": " + e.getMessage());
         }
     }
+    public static void selectAggregateDropdown(WebDriver driver, By locator, String visibleText) {
+        String name = getLocatorName(locator);
+
+        try {
+            waitForPageToLoad(driver);
+            Common.log("➡ Selecting '" + visibleText + "' from " + name);
+
+            WebElement dropdown = new WebDriverWait(driver, Duration.ofSeconds(20))
+                    .until(ExpectedConditions.elementToBeClickable(locator));
+
+            highlightElement(driver, dropdown, "yellow");
+
+            dropdown.click();
+            Thread.sleep(800);
+
+            By option = By.xpath("//option[normalize-space()='" + visibleText + "']");
+
+            WebElement optionElement = new WebDriverWait(driver, Duration.ofSeconds(20))
+                    .until(ExpectedConditions.visibilityOfElementLocated(option));
+
+            highlightElement(driver, optionElement, "green");
+
+            optionElement.click();
+            Thread.sleep(1200);
+
+            Common.log("✔ Selected: " + visibleText);
+
+        } catch (Exception e1) {
+            Common.log("⚠ First attempt failed, retrying...");
+
+            try {
+                WebElement dropdown = new WebDriverWait(driver, Duration.ofSeconds(20))
+                        .until(ExpectedConditions.elementToBeClickable(locator));
+
+                highlightElement(driver, dropdown, "yellow");
+                dropdown.click();
+                Thread.sleep(800);
+
+                By option = By.xpath("//option[normalize-space()='" + visibleText + "']");
+                WebElement optionElement = new WebDriverWait(driver, Duration.ofSeconds(20))
+                        .until(ExpectedConditions.visibilityOfElementLocated(option));
+
+                highlightElement(driver, optionElement, "green");
+                optionElement.click();
+                Thread.sleep(1200);
+
+                Common.log("✔ Selected after retry: " + visibleText);
+
+            } catch (Exception e2) {
+                throw new RuntimeException("Dropdown <select> selection failed for: " + name, e2);
+            }
+        }
+    }
+
 }

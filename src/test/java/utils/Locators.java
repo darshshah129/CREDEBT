@@ -43,5 +43,6 @@ public final class Locators {
     public static By TRANSACTIONS_ICON = By.xpath("//a[@ng-reflect-router-link='tte/transactions']//span[1]");
     public static By TRANSACTIONS_TYPE_DROPDOWN = By.xpath("(//div[@class='ng-select-container ng-has-value'])[1]");
     public static By TOTAL_COUNT_TRANSACTION = By.xpath("(//span[@id='ag-700-row-count'])[1]");
+    public static By TRANSACTION_FUNCTION_SELECTOR = By.xpath("(//ng-component[@class=\"ng-star-inserted\"])[4]");
 
 }

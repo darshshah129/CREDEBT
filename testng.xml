@@ -6,28 +6,20 @@
    <test name="Data Extract from DB">
         <classes>
          <class name="DB.DatabaseSmokeTest"/>
-            <methods>
-            <include name="db_Value_Extraction"/>
-            </methods>
         </classes>
     </test>
 
-     <test name="Data extarct from web Trade > Transaction">
+    <test name="Frontend - Parallel" parallel="classes" thread-count="5">
         <classes>
-            <class name="Web.WebSmokeTest">
-                <methods>
-                    <include name="counts_Of_Trade_Transactions_Page"/>
-                </methods>
-            </class>
+            <!-- Put each page / feature class you want run in parallel -->
+            <class name="Web.WebSmokeTest"/>
+            <!-- add more frontend classes here -->
         </classes>
-    </test>  
+    </test>
 
-    <test name="Comparator">
+        <test name="Comparator">
         <classes>
             <class name="Compare.Compare"/>
-            <methods>
-            <include name="compare"/>
-            </methods>
         </classes>
     </test>
 
