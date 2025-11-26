@@ -258,6 +258,7 @@ public class DatabaseSmokeTest {
 			new QueryInfo("SELECT COUNT(*) as cnt FROM etr WHERE type IN ('Deposit', 'OCPA', 'ICP') AND deleted_at IS NULL AND ref_id IS NULL", "DB_GET_CREDITS_TYPE_RECORDS", "cnt", ExtractionType.COUNT_INT),
             new QueryInfo("SELECT COUNT(*) as cnt FROM etr WHERE type = 'a-etr' AND deleted_at IS NULL AND ref_id IS NULL", "DB_A_ETR_AMORTISATION", "cnt", ExtractionType.COUNT_INT),
             new QueryInfo("SELECT COUNT(*) as cnt FROM etr WHERE type = 'f-etr' AND deleted_at IS NULL AND ref_id IS NULL", "DB_F_ETR_AMORTISATION", "cnt", ExtractionType.COUNT_INT),
+            new QueryInfo("SELECT COUNT(*) as cnt FROM etr WHERE type IN ('a-etr', 'f-etr') AND deleted_at IS NULL AND ref_id IS NULL", "DB_ALL_ETR_AMORTISATION", "cnt", ExtractionType.COUNT_INT),
 
 			// ETR face value queries
 //			new QueryInfo("SELECT SUM(face_value) as total FROM etr WHERE deleted_at IS NULL AND ref_id IS NULL", "DB_GET_SUM_FACE_VALUE", "total", ExtractionType.DOUBLE_VALUE),

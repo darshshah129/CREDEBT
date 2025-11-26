@@ -232,6 +232,12 @@ public class WebSmokeTest {
         String FE_F_ETR_AMORTISATION = driver.findElement(Locators.AMORTISATION_COUNT).getText();
         Common.log(FE_F_ETR_AMORTISATION);
         Common.addFEValue("FE_F_ETR_AMORTISATION",FE_F_ETR_AMORTISATION);
+
+        Common.selectNgDropdown(driver, Locators.AMORTISATION_TYPE_DROPDOWN, "All");
+        Common.verifyElementVisible(driver, Locators.AMORTISATION_COUNT);
+        String FE_ALL_ETR_AMORTISATION = driver.findElement(Locators.AMORTISATION_COUNT).getText();
+        Common.log(FE_ALL_ETR_AMORTISATION);
+        Common.addFEValue("FE_ALL_ETR_AMORTISATION",FE_ALL_ETR_AMORTISATION);
     }
     @AfterMethod(alwaysRun = true)
         public void tearDown() {
