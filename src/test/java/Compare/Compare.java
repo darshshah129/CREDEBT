@@ -31,5 +31,7 @@ public class Compare {
        common.compareDB_FE("DB_GET_TRADE_TYPE_RECORDS","FE_GET_TRADE_TYPE_RECORDS");
        common.compareDB_FE("DB_GET_DEBITS_TYPE_RECORDS","FE_GET_DEBITS_TYPE_RECORDS");
        common.compareDB_FE("DB_GET_CREDITS_TYPE_RECORDS","FE_GET_CREDITS_TYPE_RECORDS");
+        common.compareDB_FE("DB_A_ETR_AMORTISATION","FE_A_ETR_AMORTISATION");
+        common.compareDB_FE("DB_F_ETR_AMORTISATION","FE_F_ETR_AMORTISATION");
     }
 }

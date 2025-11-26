@@ -1,0 +1,1 @@
+Verify AMORTISATION_COUNT is visible

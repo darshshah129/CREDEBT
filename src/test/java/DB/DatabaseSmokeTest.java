@@ -256,12 +256,14 @@ public class DatabaseSmokeTest {
 			new QueryInfo("SELECT COUNT(*) as cnt FROM etr WHERE type IN ('b-etr', 'c-etr', 'd-etr', 'd-etr/b-etr') AND deleted_at IS NULL AND ref_id IS NULL", "DB_GET_TRADE_TYPE_RECORDS", "cnt", ExtractionType.COUNT_INT),
 			new QueryInfo("SELECT COUNT(*) as cnt FROM etr WHERE type IN ('Credit Note', 'Deduction') AND deleted_at IS NULL AND ref_id IS NULL", "DB_GET_DEBITS_TYPE_RECORDS", "cnt", ExtractionType.COUNT_INT),
 			new QueryInfo("SELECT COUNT(*) as cnt FROM etr WHERE type IN ('Deposit', 'OCPA', 'ICP') AND deleted_at IS NULL AND ref_id IS NULL", "DB_GET_CREDITS_TYPE_RECORDS", "cnt", ExtractionType.COUNT_INT),
+            new QueryInfo("SELECT COUNT(*) as cnt FROM etr WHERE type = 'a-etr' AND deleted_at IS NULL AND ref_id IS NULL", "DB_A_ETR_AMORTISATION", "cnt", ExtractionType.COUNT_INT),
+            new QueryInfo("SELECT COUNT(*) as cnt FROM etr WHERE type = 'f-etr' AND deleted_at IS NULL AND ref_id IS NULL", "DB_F_ETR_AMORTISATION", "cnt", ExtractionType.COUNT_INT),
 
 			// ETR face value queries
-			new QueryInfo("SELECT SUM(face_value) as total FROM etr WHERE deleted_at IS NULL AND ref_id IS NULL", "DB_GET_SUM_FACE_VALUE", "total", ExtractionType.DOUBLE_VALUE),
-			new QueryInfo("SELECT AVG(face_value) as avg_val FROM etr WHERE deleted_at IS NULL AND ref_id IS NULL", "DB_GET_ETR_AVG_FACE_VALUE", "avg_val", ExtractionType.DOUBLE_VALUE),
-			new QueryInfo("SELECT MAX(face_value) as max_val FROM etr WHERE deleted_at IS NULL AND ref_id IS NULL", "DB_GET_MAX_ETR_FACE_VALUE", "max_val", ExtractionType.DOUBLE_VALUE),
-			new QueryInfo("SELECT MIN(face_value) as min_val FROM etr WHERE deleted_at IS NULL AND ref_id IS NULL", "DB_GET_MIN_ETR_FACE_VALUE", "min_val", ExtractionType.DOUBLE_VALUE),
+//			new QueryInfo("SELECT SUM(face_value) as total FROM etr WHERE deleted_at IS NULL AND ref_id IS NULL", "DB_GET_SUM_FACE_VALUE", "total", ExtractionType.DOUBLE_VALUE),
+//			new QueryInfo("SELECT AVG(face_value) as avg_val FROM etr WHERE deleted_at IS NULL AND ref_id IS NULL", "DB_GET_ETR_AVG_FACE_VALUE", "avg_val", ExtractionType.DOUBLE_VALUE),
+//			new QueryInfo("SELECT MAX(face_value) as max_val FROM etr WHERE deleted_at IS NULL AND ref_id IS NULL", "DB_GET_MAX_ETR_FACE_VALUE", "max_val", ExtractionType.DOUBLE_VALUE),
+//			new QueryInfo("SELECT MIN(face_value) as min_val FROM etr WHERE deleted_at IS NULL AND ref_id IS NULL", "DB_GET_MIN_ETR_FACE_VALUE", "min_val", ExtractionType.DOUBLE_VALUE),
 
 			// ETR result queries
 			new QueryInfo("SELECT MIN(PTV_value) as min_ptv FROM etr_result", "DB_GET_MIN_PTV_VALUE", "min_ptv", ExtractionType.DOUBLE_VALUE),

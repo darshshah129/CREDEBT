@@ -1,0 +1,1 @@
+Verify TRADE_ICON is visible

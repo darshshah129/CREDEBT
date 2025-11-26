@@ -172,7 +172,7 @@ public class Common {
             Thread.sleep(2000);
             waitForLoaderToDisappear(driver);
 
-            By option = By.xpath("//div[contains(@class,'ng-option')][normalize-space()='" + optionText + "']");
+            By option = By.xpath("//div[contains(@class,'ng-option')]//*[normalize-space()='" + optionText + "']");
 
             WebElement optionElement = new WebDriverWait(driver, Duration.ofSeconds(30))
                     .until(ExpectedConditions.visibilityOfElementLocated(option));

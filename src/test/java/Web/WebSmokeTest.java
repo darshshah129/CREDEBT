@@ -68,15 +68,15 @@ public class WebSmokeTest {
 
         @Test
         public void Trade_Transactions_Page() throws Exception {
-            Common.verifyElementVisible(driver, Locators.TRADE_ICON);
-            Common.clickElement(driver, Locators.TRADE_ICON);
-            Common.verifyElementVisible(driver, Locators.TRANSACTIONS_ICON);
-            Common.clickElement(driver, Locators.TRANSACTIONS_ICON);
-            Thread.sleep(5000);
-            Common.verifyElementVisible(driver, Locators.TRANSACTIONS_TYPE_DROPDOWN);
-            Common.verifyElementVisible(driver, Locators.TOTAL_COUNT_TRANSACTION);
-            String FE_GET_ALL_ETR_RECORDS = driver.findElement(Locators.TOTAL_COUNT_TRANSACTION).getText();
-            Common.log(FE_GET_ALL_ETR_RECORDS);
+        Common.verifyElementVisible(driver, Locators.TRADE_ICON);
+        Common.clickElement(driver, Locators.TRADE_ICON);
+        Common.verifyElementVisible(driver, Locators.TRANSACTIONS_ICON);
+        Common.clickElement(driver, Locators.TRANSACTIONS_ICON);
+        Thread.sleep(5000);
+        Common.verifyElementVisible(driver, Locators.TRANSACTIONS_TYPE_DROPDOWN);
+        Common.verifyElementVisible(driver, Locators.TOTAL_COUNT_TRANSACTION);
+        String FE_GET_ALL_ETR_RECORDS = driver.findElement(Locators.TOTAL_COUNT_TRANSACTION).getText();
+        Common.log(FE_GET_ALL_ETR_RECORDS);
 
         Common.selectNgDropdown(driver, Locators.TRANSACTIONS_TYPE_DROPDOWN,"a-ETR");
         Common.verifyElementVisible(driver,Locators.TOTAL_COUNT_TRANSACTION);
@@ -118,7 +118,7 @@ public class WebSmokeTest {
         Common.verifyElementVisible(driver,Locators.TOTAL_COUNT_TRANSACTION);
         String FE_GET_DEDUCTION_RECORDS = driver.findElement(Locators.TOTAL_COUNT_TRANSACTION).getText();
         Common.log(FE_GET_DEDUCTION_RECORDS);
-       Common.addFEValue("FE_GET_DEDUCTION_RECORDS",FE_GET_DEDUCTION_RECORDS);
+        Common.addFEValue("FE_GET_DEDUCTION_RECORDS",FE_GET_DEDUCTION_RECORDS);
 
         Common.selectNgDropdown(driver, Locators.TRANSACTIONS_TYPE_DROPDOWN,"Deposit");
         Common.verifyElementVisible(driver,Locators.TOTAL_COUNT_TRANSACTION);
@@ -184,7 +184,7 @@ public class WebSmokeTest {
         Common.verifyElementVisible(driver, Locators.TOTAL_COUNT_TRANSACTION);
         String FE_GET_ASSET_TYPE_RECORDS = driver.findElement(Locators.TOTAL_COUNT_TRANSACTION).getText();
         Common.log(FE_GET_ASSET_TYPE_RECORDS);
-       Common.addFEValue("FE_GET_ASSET_TYPE_RECORDS",FE_GET_ASSET_TYPE_RECORDS);
+        Common.addFEValue("FE_GET_ASSET_TYPE_RECORDS",FE_GET_ASSET_TYPE_RECORDS);
 
         Common.selectNgDropdown(driver, Locators.TRANSACTIONS_TYPE_DROPDOWN, "Trade");
         Common.verifyElementVisible(driver, Locators.TOTAL_COUNT_TRANSACTION);
@@ -192,11 +192,11 @@ public class WebSmokeTest {
         Common.log(FE_GET_TRADE_TYPE_RECORDS);
         Common.addFEValue("FE_GET_TRADE_TYPE_RECORDS",FE_GET_TRADE_TYPE_RECORDS);
 
-            Common.selectNgDropdown(driver, Locators.TRANSACTIONS_TYPE_DROPDOWN, "Debits");
-            Common.verifyElementVisible(driver, Locators.TOTAL_COUNT_TRANSACTION);
-            String FE_GET_DEBITS_TYPE_RECORDS = driver.findElement(Locators.TOTAL_COUNT_TRANSACTION).getText();
-            Common.log(FE_GET_DEBITS_TYPE_RECORDS);
-            Common.addFEValue("FE_GET_DEBITS_TYPE_RECORDS", FE_GET_DEBITS_TYPE_RECORDS);
+        Common.selectNgDropdown(driver, Locators.TRANSACTIONS_TYPE_DROPDOWN, "Debits");
+        Common.verifyElementVisible(driver, Locators.TOTAL_COUNT_TRANSACTION);
+        String FE_GET_DEBITS_TYPE_RECORDS = driver.findElement(Locators.TOTAL_COUNT_TRANSACTION).getText();
+        Common.log(FE_GET_DEBITS_TYPE_RECORDS);
+        Common.addFEValue("FE_GET_DEBITS_TYPE_RECORDS", FE_GET_DEBITS_TYPE_RECORDS);
 
         Common.selectNgDropdown(driver, Locators.TRANSACTIONS_TYPE_DROPDOWN, "Credits");
         Common.verifyElementVisible(driver, Locators.TOTAL_COUNT_TRANSACTION);
@@ -215,7 +215,24 @@ public class WebSmokeTest {
     @Test
     public void Trade_Amortisation() throws Exception {
 
-}
+        Common.verifyElementVisible(driver, Locators.TRADE_ICON);
+        Common.clickElement(driver, Locators.TRADE_ICON);
+        Common.verifyElementVisible(driver, Locators.AMORTISATION_ICON);
+        Common.clickElement(driver, Locators.AMORTISATION_ICON);
+        Thread.sleep(5000);
+
+        Common.selectNgDropdown(driver, Locators.AMORTISATION_TYPE_DROPDOWN, "a-ETR");
+        Common.verifyElementVisible(driver, Locators.AMORTISATION_COUNT);
+        String FE_A_ETR_AMORTISATION = driver.findElement(Locators.AMORTISATION_COUNT).getText();
+        Common.log(FE_A_ETR_AMORTISATION);
+        Common.addFEValue("FE_A_ETR_AMORTISATION",FE_A_ETR_AMORTISATION);
+
+        Common.selectNgDropdown(driver, Locators.AMORTISATION_TYPE_DROPDOWN, "f-ETR");
+        Common.verifyElementVisible(driver, Locators.AMORTISATION_COUNT);
+        String FE_F_ETR_AMORTISATION = driver.findElement(Locators.AMORTISATION_COUNT).getText();
+        Common.log(FE_F_ETR_AMORTISATION);
+        Common.addFEValue("FE_F_ETR_AMORTISATION",FE_F_ETR_AMORTISATION);
+    }
     @AfterMethod(alwaysRun = true)
         public void tearDown() {
             driver.manage().deleteAllCookies();

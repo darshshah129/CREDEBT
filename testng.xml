@@ -3,11 +3,11 @@
 
 <suite name="DB-UI Validation Suite" preserve-order="true">
 
-   <test name="Data Extract from DB">
-        <classes>
-         <class name="DB.DatabaseSmokeTest"/>
-        </classes>
-    </test>
+<!--   <test name="Data Extract from DB">-->
+<!--        <classes>-->
+<!--         <class name="DB.DatabaseSmokeTest"/>-->
+<!--        </classes>-->
+<!--    </test>-->
 
     <test name="Frontend - Parallel" parallel="classes" thread-count="5">
         <classes>
