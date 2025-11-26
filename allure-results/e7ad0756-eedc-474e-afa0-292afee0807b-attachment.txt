@@ -1,1 +1,0 @@
-Verify AMORTISATION_ICON is visible
