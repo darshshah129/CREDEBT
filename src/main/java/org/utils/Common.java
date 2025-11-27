@@ -3,7 +3,6 @@ package org.utils;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import org.json.JSONObject;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -12,7 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.Reporter;
-import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -26,6 +24,8 @@ public class Common {
     private static final ThreadLocal<Integer> stepCounter = ThreadLocal.withInitial(() -> 1);
     // Keep last seen test identifier per thread so we can reset the counter when a new test method starts
     private static final ThreadLocal<String> lastTestIdentifier = new ThreadLocal<>();
+    // Per-thread log buffer to aggregate all step messages for the current test method
+    private static final ThreadLocal<StringBuilder> logBuffer = ThreadLocal.withInitial(StringBuilder::new);
     private static String getLocatorName(By locator) {
         try {
             for (Field field : Locators.class.getDeclaredFields()) {
@@ -64,13 +64,34 @@ public class Common {
             }
 
             int currentStep = stepCounter.get();
-            Reporter.log("Step " + currentStep + " :: " + message, true);
-            Allure.addAttachment("LOG - Step " + currentStep, message);
+            String line = "Step " + currentStep + " :: " + message;
+            Reporter.log(line, true);
+            // Append to per-test buffer (attach once at test end via listener)
+            logBuffer.get().append(line).append(System.lineSeparator());
             stepCounter.set(currentStep + 1);
         } catch (Exception e) {
             // Fallback: if anything goes wrong, still log the message
             Reporter.log("Step ?: :: " + message, true);
             try { Allure.addAttachment("LOG", message); } catch (Exception ignored) {}
+        }
+    }
+
+    // Attach aggregated per-test log to Allure and clear the buffer. Called from TestNG listener.
+    public static void attachAndClearTestLog(org.testng.ITestResult result) {
+        try {
+            String content = logBuffer.get().toString();
+            if (content != null && !content.isEmpty()) {
+                String title = "TEST LOG - " + result.getTestClass().getName() + "#" + result.getMethod().getMethodName();
+                Allure.addAttachment(title, "text/plain", content);
+            }
+        } catch (Exception e) {
+            // swallow
+        } finally {
+            // clear buffer for thread
+            logBuffer.remove();
+            // also reset step counter for safety
+            stepCounter.remove();
+            lastTestIdentifier.remove();
         }
     }
     public static void error(String message) {
