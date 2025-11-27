@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="DB-UI Validation Suite" parallel="methods" thread-count="5">
+<suite name="DB-UI Validation Suite" preserve-order="true" parallel="methods" thread-count="5">
 
     <listeners>
         <listener class-name="org.utils.TestNGAllureListener"/>
     </listeners>
 
-  <test name="Data Extract from DB">
+    <!-- Priority 2: Run DB and Web methods in parallel within the same test block -->
+    <test name="DB &amp; Web">
         <classes>
             <class name="DB.DatabaseSmokeTest"/>
-        </classes>
-    </test> 
-
-    <test name="Frontend">
-        <classes>
             <class name="Web.WebSmokeTest"/>
+            <!-- add more frontend classes here if you split them into separate classes -->
         </classes>
     </test>
 
