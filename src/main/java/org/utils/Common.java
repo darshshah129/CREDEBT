@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.ITestResult;
 import org.testng.Reporter;
 import java.io.File;
 import java.io.FileWriter;
@@ -21,7 +22,10 @@ import java.util.Map;
 
 public class Common {
 
-    private static int stepCounter = 1;
+    // Per-thread step counter so each test (which runs on its own thread in parallel) has its own numbering
+    private static final ThreadLocal<Integer> stepCounter = ThreadLocal.withInitial(() -> 1);
+    // Keep last seen test identifier per thread so we can reset the counter when a new test method starts
+    private static final ThreadLocal<String> lastTestIdentifier = new ThreadLocal<>();
     private static String getLocatorName(By locator) {
         try {
             for (Field field : Locators.class.getDeclaredFields()) {
@@ -43,9 +47,31 @@ public class Common {
     }
 
     public static void log(String message) {
-        Reporter.log("Step " + stepCounter + " :: " + message, true);
-        Allure.addAttachment("LOG - Step " + stepCounter, message);
-        stepCounter++;   // increment step number
+        try {
+            ITestResult tr = Reporter.getCurrentTestResult();
+            String currentId = null;
+            if (tr != null) {
+                currentId = tr.getTestClass().getName() + "#" + tr.getMethod().getMethodName();
+            } else {
+                currentId = Thread.currentThread().getName();
+            }
+
+            String lastId = lastTestIdentifier.get();
+            if (lastId == null || !lastId.equals(currentId)) {
+                // new test method detected for this thread -> reset counter
+                stepCounter.set(1);
+                lastTestIdentifier.set(currentId);
+            }
+
+            int currentStep = stepCounter.get();
+            Reporter.log("Step " + currentStep + " :: " + message, true);
+            Allure.addAttachment("LOG - Step " + currentStep, message);
+            stepCounter.set(currentStep + 1);
+        } catch (Exception e) {
+            // Fallback: if anything goes wrong, still log the message
+            Reporter.log("Step ?: :: " + message, true);
+            try { Allure.addAttachment("LOG", message); } catch (Exception ignored) {}
+        }
     }
     public static void error(String message) {
         Reporter.log("ERROR: " + message, true);
